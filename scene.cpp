@@ -1,22 +1,50 @@
 #include "Scene.hpp"
 
+using namespace std;
+
 // The constructor.
 qbRT::Scene::Scene()
 {
 	// Configure the camera.
 	m_camera.SetPosition(	qbVector<double>{std::vector<double> {0.0, -10.0, 0.0}} );
 	m_camera.SetLookAt	( qbVector<double>{std::vector<double> {0.0, 0.0, 0.0}} );
-	m_camera.SetUp			( qbVector<double>{std::vector<double> {0.0, 0.0, 1.0}} );
+	m_camera.SetUp		( qbVector<double>{std::vector<double> {0.0, 0.0, 1.0}} );
 	m_camera.SetHorzSize(0.25);
 	m_camera.SetAspect(16.0 / 9.0);
 	m_camera.UpdateCameraGeometry();
 
 	// Construct a test sphere.
 	m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));
+	m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));
+	m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));
+
+	// Modify the spheres.
+    qbRT::GTform testMatrix1, testMatrix2, testMatrix3;
+	testMatrix1.SetTransform(	qbVector<double>{std::vector<double>{-1.5, 0.0, 0.0}}, //translate
+					            qbVector<double>{std::vector<double>{1.0, 1.0, 1.0}}, //rotate
+					            qbVector<double>{std::vector<double>{0.5, 0.5, 0.65}}); //scale
+
+
+    testMatrix2.SetTransform(	qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+					            qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+					            qbVector<double>{std::vector<double>{0.5, 0.5, 0.5}});
+														
+	testMatrix3.SetTransform(	qbVector<double>{std::vector<double>{1.5, 0.0, 0.0}},
+					            qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+					            qbVector<double>{std::vector<double>{0.65, 0.5, 0.5}});
+
+	
+	m_objectList.at(0) -> SetTransformMatrix(testMatrix1);
+	m_objectList.at(1) -> SetTransformMatrix(testMatrix2);
+	m_objectList.at(2) -> SetTransformMatrix(testMatrix3);
+
+    m_objectList.at(0) -> m_baseColor = qbVector<double>{std::vector<double>{255.0, 255.0, 0.0}}; //Yellow
+	m_objectList.at(1) -> m_baseColor = qbVector<double>{std::vector<double>{255.0, 0.0, 255.0}}; //Purple
+	m_objectList.at(2) -> m_baseColor = qbVector<double>{std::vector<double>{0.0, 191.0, 255.0}}; //Aqua
 
 	// Construct a test light.
 	m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
-	m_lightList.at(0) -> m_location = qbVector<double> {std::vector<double> {5.0, -10.0, 5.0}};
+	m_lightList.at(0) -> m_location = qbVector<double> {std::vector<double> {5.0, -10.0, -5.0}};
 	m_lightList.at(0) -> m_color = qbVector<double> {std::vector<double> {255.0, 255.0, 255.0}};
 
 }
@@ -87,23 +115,28 @@ bool qbRT::Scene::Render(qbImage &outputImage)
 					//outputImage.SetPixel(x, y, 255.0 - ((dist - 9.0) / 0.94605) * 255.0, 0.0, 0.0);
 					if (validIllum)
 					{
-						outputImage.SetPixel(x, y, 255.0 * intensity, 0.0, 0.0);
+						//outputImage.SetPixel(x, y, 255.0 * intensity, 0.0, 0.0);
+						outputImage.SetPixel(x, y,	localColor.GetElement(0) * intensity,
+										            localColor.GetElement(1) * intensity,
+										            localColor.GetElement(2) * intensity);
 					}
 					else
-					{
-						outputImage.SetPixel(x, y, 0.0, 0.0, 0.0);
+					{   
+						// Leave this pixel unchanged.
+						//outputImage.SetPixel(x, y, 0.0, 0.0, 0.0);
 					}
 				}
 			else
 			{
-				outputImage.SetPixel(x, y, 0.0, 0.0, 0.0); // sent pixel to black
+				 // Leave this pixel unchanged.
+				//outputImage.SetPixel(x, y, 0.0, 0.0, 0.0); // sent pixel to black
 			}
 		  }
 		}
 	}
 	
-	std::cout << "Minimum distance: " << minDist << std::endl;
-	std::cout << "Maximum distance: " << maxDist << std::endl;	
+	cout << "Minimum distance: " << minDist << endl;
+	cout << "Maximum distance: " << maxDist << endl;	
 	
 	return true;
 }
