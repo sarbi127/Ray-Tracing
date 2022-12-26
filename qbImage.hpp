@@ -33,6 +33,7 @@ class qbImage
 	private:
 		Uint32 ConvertColor(const double red, const double green, const double blue);
 		void InitTexture();
+		void ComputeMaxValues();
 		
 	private:
 		// Arrays to store image data.
@@ -42,6 +43,9 @@ class qbImage
 		
 		// And store the size of the image.
 		int m_xSize, m_ySize;
+
+		// Store the maximum values.
+		double m_maxRed, m_maxGreen, m_maxBlue, m_overallMax;
 		
 		// SDL2 stuff.
 		SDL_Renderer *m_pRenderer;

@@ -25,27 +25,61 @@ bool qbRT::PointLight::ComputeIllumination(	const qbVector<double> &intPoint, co
 	// Compute a starting point.
 	qbVector<double> startPoint = intPoint;
 	
-	// Compute the angle between the local normal and the light ray.
-	// Note that we assume that localNormal is a unit vector.
-	double angle = acos(qbVector<double>::dot(localNormal, lightDir));
+	// Construct a ray from the point of intersection to the light.
+	qbRT::Ray lightRay (startPoint, startPoint + lightDir);
 	
-	// If the normal is pointing away from the light, then we have no illumination.
-	if (angle > 1.5708)
+	/* Check for intersections with all of the objects
+		in the scene, except for the current one. */
+	qbVector<double> poi		{3};
+	qbVector<double> poiNormal	{3};
+	qbVector<double> poiColor	{3};
+	bool validInt = false;
+	for (auto sceneObject : objectList)
 	{
-		// No illumination.
-		color = m_color;
-		intensity = 0.0;
-		return false;
+		if (sceneObject != currentObject)
+		{
+			validInt = sceneObject -> TestIntersection(lightRay, poi, poiNormal, poiColor);
+		}
+		
+		/* If we have an intersection, then there is no point checking further
+			so we can break out of the loop. In other words, this object is
+			blocking light from this light source. */
+		if (validInt)
+			break;
+	}
+
+	/* Only continue to compute illumination if the light ray didn't
+		intersect with any objects in the scene. Ie. no objects are
+		casting a shadow from this light source. */
+	if (!validInt)
+	{
+		// Compute the angle between the local normal and the light ray.
+		// Note that we assume that localNormal is a unit vector.
+		double angle = acos(qbVector<double>::dot(localNormal, lightDir));
+		
+		// If the normal is pointing away from the light(pi/2), then we have no illumination.
+		if (angle > 1.5708)
+		{
+			// No illumination.
+			color = m_color;
+			intensity = 0.0;
+			return false;
+		}
+		else
+		{
+			// We do have illumination.
+			color = m_color;
+			intensity = m_intensity * (1.0 - (angle / 1.5708));
+			return true;
+		}
 	}
 	else
 	{
-		// We do have illumination.
+		// Shadow, so no illumination.
 		color = m_color;
-		intensity = m_intensity * (1.0 - (angle / 1.5708));
-		//intensity = 1.0;
-		return true;
-	}
+		intensity = 0.0;
+		return false;
+	}	
 	
-	return true;
 }
 

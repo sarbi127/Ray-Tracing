@@ -7,6 +7,7 @@
 #include "qbImage.hpp"
 #include "camera.hpp"
 #include "objsphere.hpp"
+#include "objplane.hpp"
 #include "pointlight.hpp"
 
 
