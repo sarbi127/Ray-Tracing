@@ -21,6 +21,11 @@ namespace qbRT
 			
 			// Function to perform the rendering.
 			bool Render(qbImage &outputImage);
+
+			// Function to cast a ray into the scene.
+			bool CastRay(	qbRT::Ray &castRay, std::shared_ptr<qbRT::ObjectBase> &closestObject,
+										qbVector<double> &closestIntPoint, qbVector<double> &closestLocalNormal,
+										qbVector<double> &closestLocalColor);
 			
 		// Private functions.
 		private:
