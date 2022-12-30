@@ -15,10 +15,10 @@ namespace qbRT
 			virtual ~PointLight() override;
 			
 			// Function to compute illumination.
-			virtual bool ComputeIllumination(	const qbVector<double> &intPoint, const qbVector<double> &localNormal,
-																				const std::vector<std::shared_ptr<qbRT::ObjectBase>> &objectList,
-																				const std::shared_ptr<qbRT::ObjectBase> &currentObject,
-																				qbVector<double> &color, double &intensity) override;
+			virtual bool ComputeIllumination(const qbVector<double> &intPoint, const qbVector<double> &localNormal,
+											 const std::vector<std::shared_ptr<qbRT::ObjectBase>> &objectList,
+											 const std::shared_ptr<qbRT::ObjectBase> &currentObject,
+											 qbVector<double> &color, double &intensity) override;
 	};
 }
 

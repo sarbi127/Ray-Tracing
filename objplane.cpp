@@ -13,8 +13,8 @@ qbRT:: ObjPlane ::~ObjPlane ()
 }
 
 // The function to test for intersections.
-bool qbRT::ObjPlane::TestIntersection(	const qbRT::Ray &castRay, qbVector<double> &intPoint,
-																				qbVector<double> &localNormal, qbVector<double> &localColor)
+bool qbRT::ObjPlane::TestIntersection(const qbRT::Ray &castRay, qbVector<double> &intPoint,
+									  qbVector<double> &localNormal, qbVector<double> &localColor)
 {
 	// Copy the ray and apply the backwards transform.
 	qbRT::Ray bckRay = m_transformMatrix.Apply(castRay, qbRT::BCKTFORM);

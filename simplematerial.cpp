@@ -44,10 +44,10 @@ qbVector<double> qbRT::SimpleMaterial::ComputeColor(const std::vector<std::share
 }
 
 // Function to compute the specular highlights.
-qbVector<double> qbRT::SimpleMaterial::ComputeSpecular(	const std::vector<std::shared_ptr<qbRT::ObjectBase>> &objectList,
-																												const std::vector<std::shared_ptr<qbRT::LightBase>> &lightList,
-																												const qbVector<double> &intPoint, const qbVector<double> &localNormal,
-																												const qbRT::Ray &cameraRay)
+qbVector<double> qbRT::SimpleMaterial::ComputeSpecular(const std::vector<std::shared_ptr<qbRT::ObjectBase>> &objectList,
+													   const std::vector<std::shared_ptr<qbRT::LightBase>> &lightList,
+													   const qbVector<double> &intPoint, const qbVector<double> &localNormal,
+													   const qbRT::Ray &cameraRay)
 {
 	qbVector<double> spcColor	{3};
 	double red = 0.0;

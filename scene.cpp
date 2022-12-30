@@ -35,7 +35,7 @@ qbRT::Scene::Scene()
 	testMaterial5 -> m_reflectivity = 0.50;
 	testMaterial5 -> m_shininess = 10.0;
 
-	floorMaterial -> m_baseColor = qbVector<double>{std::vector<double>{0.7, 0.2, 0.7}}; //Bright Purple
+	floorMaterial -> m_baseColor = qbVector<double>{std::vector<double>{0.8, 0.6, 1.0}}; //Mauve
 	floorMaterial -> m_reflectivity = 0.50;
 	floorMaterial -> m_shininess = 10.0;
 
@@ -71,27 +71,27 @@ qbRT::Scene::Scene()
 
 	// Modify the spheres.
     qbRT::GTform testMatrix1, testMatrix2, testMatrix3, testMatrix4, testMatrix5;
-	testMatrix1.SetTransform(	qbVector<double>{std::vector<double>{-2.0, 2.0, 0.0}}, //translate
-					            qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}}, //rotate
-					            qbVector<double>{std::vector<double>{0.5, 0.5, 0.65}}); //scale
+	testMatrix1.SetTransform(qbVector<double>{std::vector<double>{-2.0, 2.0, 0.0}}, //translate
+					         qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}}, //rotate
+					         qbVector<double>{std::vector<double>{0.5, 0.5, 0.65}}); //scale
 
-	testMatrix4.SetTransform(	qbVector<double>{std::vector<double>{-1.75, 9.0, 0.0}}, 
-					            qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}}, 
-					            qbVector<double>{std::vector<double>{0.5, 0.5, 0.5}}); 
+	testMatrix4.SetTransform(qbVector<double>{std::vector<double>{-1.75, 9.0, 0.0}}, 
+					         qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}}, 
+					         qbVector<double>{std::vector<double>{0.5, 0.5, 0.5}}); 
 
 
-    testMatrix2.SetTransform(	qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
-					            qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
-					            qbVector<double>{std::vector<double>{0.5, 0.5, 0.5}});
+    testMatrix2.SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+					         qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+					         qbVector<double>{std::vector<double>{0.5, 0.5, 0.5}});
 
-	testMatrix5.SetTransform(	qbVector<double>{std::vector<double>{1.75, 9.0, 0.0}},
-					            qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
-					            qbVector<double>{std::vector<double>{0.5, 0.5, 0.5}});
+	testMatrix5.SetTransform(qbVector<double>{std::vector<double>{1.75, 9.0, 0.0}},
+					         qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+					         qbVector<double>{std::vector<double>{0.5, 0.5, 0.5}});
 
 	
-	testMatrix3.SetTransform(	qbVector<double>{std::vector<double>{2.25, 2.0, 0.0}}, //translate
-					            qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}}, //rotate
-					            qbVector<double>{std::vector<double>{0.65, 0.5, 0.5}}); //scale
+	testMatrix3.SetTransform(qbVector<double>{std::vector<double>{2.25, 2.0, 0.0}}, //translate
+					         qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}}, //rotate
+					         qbVector<double>{std::vector<double>{0.65, 0.5, 0.5}}); //scale
 														
 	
     m_objectList.at(0) -> SetTransformMatrix(testMatrix1);
@@ -121,7 +121,7 @@ qbRT::Scene::Scene()
 	m_objectList.at(2) -> AssignMaterial(testMaterial3);
 	m_objectList.at(3) -> AssignMaterial(testMaterial4);
 	m_objectList.at(4) -> AssignMaterial(testMaterial5);
-	m_objectList.at(3) -> AssignMaterial(floorMaterial);
+	m_objectList.at(5) -> AssignMaterial(floorMaterial);
 
 	// Construct a test light.
 	m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
@@ -205,8 +205,8 @@ bool qbRT::Scene::Render(qbImage &outputImage)
 
 
 bool qbRT::Scene::CastRay(qbRT::Ray &castRay, std::shared_ptr<qbRT::ObjectBase> &closestObject,
-										qbVector<double> &closestIntPoint, qbVector<double> &closestLocalNormal,
-										qbVector<double> &closestLocalColor)
+						  qbVector<double> &closestIntPoint, qbVector<double> &closestLocalNormal,
+						  qbVector<double> &closestLocalColor)
 {
     qbVector<double> intPoint		{3};
 	qbVector<double> localNormal	{3};

@@ -13,11 +13,11 @@ qbRT::MaterialBase::~MaterialBase()
 }
 
 // Function to compute the color of the material.
-qbVector<double> qbRT::MaterialBase::ComputeColor(	const std::vector<std::shared_ptr<qbRT::ObjectBase>> &objectList,
-																										const std::vector<std::shared_ptr<qbRT::LightBase>> &lightList,
-																										const std::shared_ptr<qbRT::ObjectBase> &currentObject,
-																										const qbVector<double> &intPoint, const qbVector<double> &localNormal,
-																										const qbRT::Ray &cameraRay)
+qbVector<double> qbRT::MaterialBase::ComputeColor(const std::vector<std::shared_ptr<qbRT::ObjectBase>> &objectList,
+												  const std::vector<std::shared_ptr<qbRT::LightBase>> &lightList,
+												  const std::shared_ptr<qbRT::ObjectBase> &currentObject,
+												  const qbVector<double> &intPoint, const qbVector<double> &localNormal,
+												  const qbRT::Ray &cameraRay)
 {
 	// Define an initial material color.
 	qbVector<double> matColor	{3};
@@ -26,11 +26,11 @@ qbVector<double> qbRT::MaterialBase::ComputeColor(	const std::vector<std::shared
 }
 
 // Function to compute the diffuse color.
-qbVector<double> qbRT::MaterialBase::ComputeDiffuseColor(	const std::vector<std::shared_ptr<qbRT::ObjectBase>> &objectList,
-																													const std::vector<std::shared_ptr<qbRT::LightBase>> &lightList,
-																													const std::shared_ptr<qbRT::ObjectBase> &currentObject,
-																													const qbVector<double> &intPoint, const qbVector<double> &localNormal,
-																													const qbVector<double> &baseColor)
+qbVector<double> qbRT::MaterialBase::ComputeDiffuseColor(const std::vector<std::shared_ptr<qbRT::ObjectBase>> &objectList,
+														 const std::vector<std::shared_ptr<qbRT::LightBase>> &lightList,
+														 const std::shared_ptr<qbRT::ObjectBase> &currentObject,
+														 const qbVector<double> &intPoint, const qbVector<double> &localNormal,
+														 const qbVector<double> &baseColor)
 {
 	// Compute the color due to diffuse illumination.
 	qbVector<double> diffuseColor	{3};
@@ -66,11 +66,11 @@ qbVector<double> qbRT::MaterialBase::ComputeDiffuseColor(	const std::vector<std:
 }
 
 // Function to compute the color due to reflection.
-qbVector<double> qbRT::MaterialBase::ComputeReflectionColor(	const std::vector<std::shared_ptr<qbRT::ObjectBase>> &objectList,
-																															const std::vector<std::shared_ptr<qbRT::LightBase>> &lightList,
-																															const std::shared_ptr<qbRT::ObjectBase> &currentObject,
-																															const qbVector<double> &intPoint, const qbVector<double> &localNormal,
-																															const qbRT::Ray &incidentRay)
+qbVector<double> qbRT::MaterialBase::ComputeReflectionColor(const std::vector<std::shared_ptr<qbRT::ObjectBase>> &objectList,
+															const std::vector<std::shared_ptr<qbRT::LightBase>> &lightList,
+															const std::shared_ptr<qbRT::ObjectBase> &currentObject,
+															const qbVector<double> &intPoint, const qbVector<double> &localNormal,
+															const qbRT::Ray &incidentRay)
 {
 	qbVector<double> reflectionColor {3};
 	

@@ -15,7 +15,7 @@ namespace qbRT
         //Function to set camera parameters.
 		void SetPosition	(const qbVector<double> &newPosition);
 		void SetLookAt		(const qbVector<double> &newLookAt);
-		void SetUp				(const qbVector<double> &upVector);
+		void SetUp			(const qbVector<double> &upVector);
 		void SetLength		(double newLength);
 		void SetHorzSize	(double newSize);
 		void SetAspect		(double newAspectRatio);

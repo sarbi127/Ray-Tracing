@@ -34,8 +34,8 @@ qbRT::GTform::GTform(const qbMatrix2<double> &fwd, const qbMatrix2<double> &bck)
 
 // Function to set the transform.
 void qbRT::GTform::SetTransform(const qbVector<double> &translation,
-				const qbVector<double> &rotation,
-				const qbVector<double> &scale)
+				                const qbVector<double> &rotation,
+				                const qbVector<double> &scale)
 {
 
      

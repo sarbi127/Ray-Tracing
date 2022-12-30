@@ -22,9 +22,9 @@ namespace qbRT
                 GTform(const qbMatrix2<double> &fwd, const qbMatrix2<double> &bck);
 
                 // Function to set translation, rotation and scale components.
-                void SetTransform( const qbVector<double> &transaction,
-                                   const qbVector<double> &rotation,
-                                   const qbVector<double> &scale);
+                void SetTransform(const qbVector<double> &transaction,
+                                  const qbVector<double> &rotation,
+                                  const qbVector<double> &scale);
                 
                 // Functions to return the transform matrices.
                 qbMatrix2<double> GetForward();

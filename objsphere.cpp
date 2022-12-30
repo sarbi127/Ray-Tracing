@@ -18,7 +18,7 @@ bool qbRT::ObjSphere::TestIntersection(const qbRT::Ray &castRay, qbVector<double
 {
 	
 	
-	// Copy the ray and apply the backwards transform. Convert Ray from Worls coordinate to local coordinate.
+	// Copy the ray and apply the backwards transform. Convert Ray from Worlds coordinate to local coordinate.
 	qbRT::Ray bckRay = m_transformMatrix.Apply(castRay, qbRT::BCKTFORM);
 	
 	

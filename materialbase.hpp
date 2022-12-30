@@ -37,11 +37,11 @@ namespace qbRT
 													const qbRT::Ray &incidentRay);
 																										
 			// Function to cast a ray into the scene.
-			bool CastRay(	const qbRT::Ray &castRay, const std::vector<std::shared_ptr<qbRT::ObjectBase>> &objectList,
-										const std::shared_ptr<qbRT::ObjectBase> &thisObject,
-										std::shared_ptr<qbRT::ObjectBase> &closestObject,
-										qbVector<double> &closestIntPoint, qbVector<double> &closestLocalNormal,
-										qbVector<double> &closestLocalColor);
+			bool CastRay(const qbRT::Ray &castRay, const std::vector<std::shared_ptr<qbRT::ObjectBase>> &objectList,
+						 const std::shared_ptr<qbRT::ObjectBase> &thisObject,
+						 std::shared_ptr<qbRT::ObjectBase> &closestObject,
+						 qbVector<double> &closestIntPoint, qbVector<double> &closestLocalNormal,
+						 qbVector<double> &closestLocalColor);
 										
 		public:
 			// Counter for the number of relection rays.
