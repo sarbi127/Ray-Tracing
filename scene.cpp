@@ -6,16 +6,61 @@ using namespace std;
 // The constructor.
 qbRT::Scene::Scene()
 {
+	// Configure the camera.
+	m_camera.SetPosition(	qbVector<double>{std::vector<double> {0.0, -10.0, -2.0}});
+	//m_camera.SetPosition( qbVector<double>{std::vector<double> {3.0, -5.0, -2.0}});
+	m_camera.SetLookAt	( qbVector<double>{std::vector<double> {0.0, 0.0, 0.0}});
+	m_camera.SetUp		( qbVector<double>{std::vector<double> {0.0, 0.0, 1.0}});
+	//m_camera.SetHorzSize(0.25);
+	m_camera.SetHorzSize(0.85);
+	m_camera.SetAspect(16.0 / 9.0);
+	//m_camera.SetAspect(1.0);
+	m_camera.UpdateCameraGeometry();
+
+
     // Create some materials.
-	auto testMaterial1 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
-    auto testMaterial2 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
-	auto testMaterial3 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
-	auto testMaterial4 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
-	auto testMaterial5 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+	//auto testMaterial1 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+    //auto testMaterial2 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+	//auto testMaterial3 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+	//auto testMaterial4 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+	//auto testMaterial5 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+	auto silverMetal = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+	auto redMetal = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+	auto goldMetal = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+	auto blueDiffuse = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+	auto yellowDiffuse = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+	auto orangeDiffuse = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
 	auto floorMaterial = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
-	
+	auto wallMaterial1 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+	auto wallMaterial2 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+	auto wallMaterial3 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+
    // Setup the materials.
-	testMaterial1 -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 1.0, 0.0}};
+    silverMetal -> m_baseColor = qbVector<double>{std::vector<double>{0.5, 0.5, 0.8}};
+	silverMetal -> m_reflectivity = 0.50;
+	silverMetal -> m_shininess = 20.0;
+	
+	goldMetal -> m_baseColor = qbVector<double>{std::vector<double>{0.96, 0.90, 0.34}};
+	goldMetal -> m_reflectivity = 0.25;
+	goldMetal -> m_shininess = 20.0;
+	
+	blueDiffuse -> m_baseColor = qbVector<double>{std::vector<double>{0.007, 0.8, 0.96}};
+	blueDiffuse -> m_reflectivity = 0.0;
+	blueDiffuse -> m_shininess = 30.0;
+	
+	yellowDiffuse -> m_baseColor = qbVector<double>{std::vector<double>{0.8, 0.8, 0.2}};
+	yellowDiffuse -> m_reflectivity = 0.5;
+	yellowDiffuse -> m_shininess = 5.0;
+	
+	orangeDiffuse -> m_baseColor = qbVector<double>{std::vector<double>{0.81, 0.39, 0.0}};
+	orangeDiffuse -> m_reflectivity = 0.50;
+	orangeDiffuse -> m_shininess = 15.0;
+
+	redMetal -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 0.0, 0.0}};
+	redMetal -> m_reflectivity = 0.5;
+	redMetal -> m_shininess = 20.0;
+
+	/*testMaterial1 -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 1.0, 0.0}};
 	testMaterial1 -> m_reflectivity = 0.50;
 	testMaterial1 -> m_shininess = 10.0;
 
@@ -36,41 +81,134 @@ qbRT::Scene::Scene()
 	testMaterial5 -> m_shininess = 10.0;
 
 	floorMaterial -> m_baseColor = qbVector<double>{std::vector<double>{0.8, 0.6, 1.0}}; //Mauve
-	floorMaterial -> m_reflectivity = 0.50;
-	floorMaterial -> m_shininess = 10.0;
+	floorMaterial -> m_reflectivity = 0.5;
+	floorMaterial -> m_shininess = 0.0;*/
 
-	// Configure the camera.
-	m_camera.SetPosition( qbVector<double>{std::vector<double> {0.0, -10.0, -2.0}});
-	m_camera.SetLookAt	( qbVector<double>{std::vector<double> {0.0, 0.0, 0.0}});
-	m_camera.SetUp		( qbVector<double>{std::vector<double> {0.0, 0.0, 1.0}});
-	m_camera.SetHorzSize(0.25);
-	m_camera.SetAspect(16.0 / 9.0);
-	m_camera.UpdateCameraGeometry();
+    
+    floorMaterial -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 1.0, 1.0}};
+	floorMaterial -> m_reflectivity = 0.50;
+	floorMaterial -> m_shininess = 8.0;
+
+	wallMaterial1 -> m_baseColor = qbVector<double>{std::vector<double>{0.45, 0.32, 0.89}}; //purple
+	wallMaterial1 -> m_reflectivity = 0.50;
+	wallMaterial1 -> m_shininess = 8.0;
+
+
+	wallMaterial2 -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 0.125, 0.125}};
+	wallMaterial2 -> m_reflectivity = 0.50;
+	wallMaterial2 -> m_shininess = 8.0;
+
+
+    wallMaterial3 -> m_baseColor = qbVector<double>{std::vector<double>{0.86, 0.27, 0.49}}; //pink
+	wallMaterial3 -> m_reflectivity = 0.50;
+	wallMaterial3 -> m_shininess = 8.0;
+
+	
+
+	//create and setup objects.
+	auto cone = std::make_shared<qbRT::Cone> (qbRT::Cone());
+	cone -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{0.0, 0.0, -0.5}},
+											 qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+											 qbVector<double>{std::vector<double>{1.0, 1.0, 2.0}}});
+	cone -> AssignMaterial(silverMetal);
+	
+	auto leftSphere = std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere());
+	leftSphere -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{1.0, -2.0, 0.5}},
+												   qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+												   qbVector<double>{std::vector<double>{0.65, 0.5, 0.5}}});
+	leftSphere -> AssignMaterial(blueDiffuse);
+	
+	auto rightSphere = std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere());
+	rightSphere -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{1.5, 0.0, 0.0}},
+												    qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+													qbVector<double>{std::vector<double>{1.0, 1.0, 1.0}}});
+	rightSphere -> AssignMaterial(wallMaterial1);
+	
+	auto topSphere = std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere());
+	topSphere -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{-2.0, -2.0, 0.0}},
+												  qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+												  qbVector<double>{std::vector<double>{0.6, 0.6, 0.6}}});
+	topSphere -> AssignMaterial(orangeDiffuse);
+	
+	auto floor = std::make_shared<qbRT::ObjPlane> (qbRT::ObjPlane());
+	floor -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{0.0, 0.0, 1.0}},
+											  qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+											  qbVector<double>{std::vector<double>{16.0, 16.0, 1.0}}});
+	floor -> AssignMaterial(floorMaterial);
+	
+	auto leftWall = std::make_shared<qbRT::ObjPlane> (qbRT::ObjPlane());
+	leftWall -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{-4.0, 0.0, 0.0}},
+										         qbVector<double>{std::vector<double>{0.0, -M_PI/2.0, -M_PI/2.0}},
+												 qbVector<double>{std::vector<double>{16.0, 16.0, 1.0}}});
+	leftWall -> AssignMaterial(wallMaterial1);
+	
+	auto backWall = std::make_shared<qbRT::ObjPlane> (qbRT::ObjPlane());
+	backWall -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{0.0, 4.0, 0.0}},
+												 qbVector<double>{std::vector<double>{-M_PI/2.0, 0.0, 0.0}},
+												 qbVector<double>{std::vector<double>{16.0, 16.0, 1.0}}});
+	backWall -> AssignMaterial(wallMaterial2);
+
+	auto rightWall = std::make_shared<qbRT::ObjPlane> (qbRT::ObjPlane());
+	rightWall -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{4.0, 0.0, 0.0}},
+												 qbVector<double>{std::vector<double>{0.0, -M_PI/2.0, -M_PI/2.0}},
+												 qbVector<double>{std::vector<double>{16.0, 16.0, 1.0}}});
+	rightWall -> AssignMaterial(wallMaterial3);
+	
+	/*auto cylinder1 = std::make_shared<qbRT::Cylinder> (qbRT::Cylinder());
+	cylinder1 -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{-1.5, -2.0, 1.0}},
+												  qbVector<double>{std::vector<double>{0.0, -M_PI/2.0, 0.0}},
+												  qbVector<double>{std::vector<double>{0.25, 0.25, 1.0}}});
+	cylinder1 -> AssignMaterial(goldMetal);*/
+	
+	auto cylinder2 = std::make_shared<qbRT::Cylinder> (qbRT::Cylinder());
+	cylinder2 -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{-1.0, -2.0, 0.0}},
+												  qbVector<double>{std::vector<double>{0.0, M_PI/5.0, 0.0}},
+												  qbVector<double>{std::vector<double>{0.25, 0.25, 1.0}}});
+	cylinder2 -> AssignMaterial(redMetal);
+	
+	/*auto cone2 = std::make_shared<qbRT::Cone> (qbRT::Cone());
+	cone2 -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{0.0, -1.0, 0.0}},
+											  qbVector<double>{std::vector<double>{M_PI/4.0, 0.0, 0.0}},
+											  qbVector<double>{std::vector<double>{0.5, 0.5, 1.0}}});
+	cone2 -> AssignMaterial(goldMetal); */
+
+    // Put the objects into the scene.
+	m_objectList.push_back(cone);
+	m_objectList.push_back(leftSphere);
+	m_objectList.push_back(rightSphere);
+	m_objectList.push_back(topSphere);
+	m_objectList.push_back(floor);
+	m_objectList.push_back(leftWall);
+	m_objectList.push_back(backWall);
+	m_objectList.push_back(rightWall);
+	//m_objectList.push_back(cylinder1);
+	m_objectList.push_back(cylinder2);
+	//m_objectList.push_back(cone2);
 
 	// Construct a test sphere.
+	/*m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));
 	m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));
 	m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));
 	m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));
-	m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));
-	m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));
+	m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));*/
 
     // Construct a test plane.
-	m_objectList.push_back(std::make_shared<qbRT::ObjPlane> (qbRT::ObjPlane()));
+	//m_objectList.push_back(std::make_shared<qbRT::ObjPlane> (qbRT::ObjPlane()));
 	//m_objectList.at(3) -> m_baseColor = qbVector<double>{std::vector<double> {0.5, 0.5, 0.5}};
-	m_objectList.at(5) -> m_baseColor = qbVector<double>{std::vector<double> {0.5, 0.5, 0.5}};
+	//m_objectList.at(5) -> m_baseColor = qbVector<double>{std::vector<double> {0.5, 0.5, 0.5}};
 
 	// Define a transform for the plane.
-	qbRT::GTform planeMatrix;
+	/*qbRT::GTform planeMatrix;
 	planeMatrix.SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0, 0.75}},
 							 qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
-							 qbVector<double>{std::vector<double>{4.0, 4.0, 1.0}});
+							 qbVector<double>{std::vector<double>{4.0, 4.0, 1.0}});*/
 
 	//m_objectList.at(3) -> SetTransformMatrix(planeMatrix);
-	m_objectList.at(5) -> SetTransformMatrix(planeMatrix);
+	//m_objectList.at(5) -> SetTransformMatrix(planeMatrix);
 
 
 	// Modify the spheres.
-    qbRT::GTform testMatrix1, testMatrix2, testMatrix3, testMatrix4, testMatrix5;
+    /*qbRT::GTform testMatrix1, testMatrix2, testMatrix3, testMatrix4, testMatrix5;
 	testMatrix1.SetTransform(qbVector<double>{std::vector<double>{-2.0, 2.0, 0.0}}, //translate
 					         qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}}, //rotate
 					         qbVector<double>{std::vector<double>{0.5, 0.5, 0.65}}); //scale
@@ -98,7 +236,7 @@ qbRT::Scene::Scene()
 	m_objectList.at(1) -> SetTransformMatrix(testMatrix4);
 	m_objectList.at(2) -> SetTransformMatrix(testMatrix2);
 	m_objectList.at(3) -> SetTransformMatrix(testMatrix5);
-	m_objectList.at(4) -> SetTransformMatrix(testMatrix3);
+	m_objectList.at(4) -> SetTransformMatrix(testMatrix3);*/
 
 	//m_objectList.at(0) -> SetTransformMatrix(testMatrix1);
 	//m_objectList.at(1) -> SetTransformMatrix(testMatrix2);
@@ -109,22 +247,22 @@ qbRT::Scene::Scene()
 	//m_objectList.at(2) -> m_baseColor = qbVector<double>{std::vector<double>{0.0, 0.7, 1.0}}; //Aqua
 
    
-	m_objectList.at(0) -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 1.0, 0.0}}; //Yellow
+	/*m_objectList.at(0) -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 1.0, 0.0}}; //Yellow
 	m_objectList.at(1) -> m_baseColor = qbVector<double>{std::vector<double>{0.0, 1.0, 0.3}}; //Green
 	m_objectList.at(2) -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 0.0, 0.0}}; //Red
 	m_objectList.at(3) -> m_baseColor = qbVector<double>{std::vector<double>{0.7, 0.2, 0.7}}; //Bright Purple
-	m_objectList.at(4) -> m_baseColor = qbVector<double>{std::vector<double>{0.0, 0.7, 1.0}}; //Aqua
+	m_objectList.at(4) -> m_baseColor = qbVector<double>{std::vector<double>{0.0, 0.7, 1.0}}; //Aqua */
 
 	// Assign materials to objects.
-	m_objectList.at(0) -> AssignMaterial(testMaterial1);
+	/*m_objectList.at(0) -> AssignMaterial(testMaterial1);
 	m_objectList.at(1) -> AssignMaterial(testMaterial2);
 	m_objectList.at(2) -> AssignMaterial(testMaterial3);
 	m_objectList.at(3) -> AssignMaterial(testMaterial4);
 	m_objectList.at(4) -> AssignMaterial(testMaterial5);
-	m_objectList.at(5) -> AssignMaterial(floorMaterial);
+	m_objectList.at(5) -> AssignMaterial(floorMaterial);*/
 
 	// Construct a test light.
-	m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
+	/*m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
 	m_lightList.at(0) -> m_location = qbVector<double> {std::vector<double> {5.0, -10.0, -5.0}};
 	m_lightList.at(0) -> m_color = qbVector<double> {std::vector<double> {0.0, 0.0, 1.0}}; //blue
 
@@ -134,7 +272,17 @@ qbRT::Scene::Scene()
 	
 	m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
 	m_lightList.at(2) -> m_location = qbVector<double> {std::vector<double> {0.0, -10.0, -5.0}};
-	m_lightList.at(2) -> m_color = qbVector<double> {std::vector<double> {0.0, 1.0, 0.0}}; //green
+	m_lightList.at(2) -> m_color = qbVector<double> {std::vector<double> {0.0, 1.0, 0.0}}; //green */
+
+
+   // Construct and setup the lights.
+	m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
+	m_lightList.at(0) -> m_location = qbVector<double> {std::vector<double> {3.0, -10.0, -5.0}};
+	m_lightList.at(0) -> m_color = qbVector<double> {std::vector<double> {1.0, 1.0, 1.0}};
+	
+	m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
+	m_lightList.at(1) -> m_location = qbVector<double> {std::vector<double> {0.0, -10.0, -5.0}};
+	m_lightList.at(1) -> m_color = qbVector<double> {std::vector<double> {1.0, 1.0, 1.0}};
 
 }
 

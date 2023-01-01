@@ -44,7 +44,7 @@ bool qbRT::ObjSphere::TestIntersection(const qbRT::Ray &castRay, qbVector<double
 	if (intTest > 0.0)// have intersection
 	{
 		// Add shading
-		double numSQRT = sqrtf(intTest);
+		double numSQRT = sqrtf(intTest); //sqr intersection
 		double t1 = (-b + numSQRT) / 2.0;
 		double t2 = (-b - numSQRT) / 2.0;
 		
