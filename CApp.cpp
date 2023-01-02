@@ -17,7 +17,17 @@ bool CApp::OnInit()
   {
     return false;
   }
-  pWindow = SDL_CreateWindow("Ray Tracing", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+
+ // int xSize = 1280;
+  //int ySize = 720;
+
+  int xSize = 1260;
+  int ySize = 700;
+
+  //pWindow = SDL_CreateWindow("Ray Tracing", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+
+  pWindow = SDL_CreateWindow("Ray Tracing", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, xSize, ySize, SDL_WINDOW_SHOWN);
+
   
   	if (pWindow != NULL)
 	{
@@ -25,7 +35,8 @@ bool CApp::OnInit()
 		pRenderer = SDL_CreateRenderer(pWindow, -1, 0);
 		
 		// Initialise the qbImage instance.
-		m_image.Initialize(WIDTH, HEIGHT, pRenderer);
+		//m_image.Initialize(WIDTH, HEIGHT, pRenderer);
+		m_image.Initialize(xSize, ySize, pRenderer);
 		
 		// Create some colour variations.
 		/*for (int x=0; x<WIDTH; ++x)
@@ -67,6 +78,30 @@ bool CApp::OnInit()
 		
 		// Render the scene.
 		m_scene.Render(m_image);
+
+		// Setup a texture.
+		/*qbRT::Texture::Checker testTexture;
+		testTexture.SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0}},
+								M_PI/4.0,
+								 qbVector<double>{std::vector<double>{4.0, 4.0}}	);
+															
+		// Render the texture.
+		for (int y=0; y<ySize; ++y)
+		{
+			for (int x=0; x<xSize; ++x)
+			{
+				// Compute u,v
+				double u = (static_cast<double>(x) / (static_cast<double>(xSize) / 2.0)) - 1.0;
+				double v = (static_cast<double>(y) / (static_cast<double>(ySize) / 2.0)) - 1.0;
+				qbVector<double> uvCoords {std::vector<double> {u, v}};
+				
+				// Get the color from the texture.
+				qbVector<double> pixelColor = testTexture.GetColor(uvCoords);
+				
+				// Update this pixel of the image.
+				m_image.SetPixel(x, y, pixelColor.GetElement(0), pixelColor.GetElement(1), pixelColor.GetElement(2));
+			}
+		}*/
 		
 		// Display the image.
 		m_image.Display();

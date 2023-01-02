@@ -1,5 +1,6 @@
 #include "Scene.hpp"
 #include "simplematerial.hpp"
+#include "checker.hpp"
 
 using namespace std;
 
@@ -16,6 +17,34 @@ qbRT::Scene::Scene()
 	m_camera.SetAspect(16.0 / 9.0);
 	//m_camera.SetAspect(1.0);
 	m_camera.UpdateCameraGeometry();
+
+	// Create some textures.
+	auto floorTexture = std::make_shared<qbRT::Texture::Checker> (qbRT::Texture::Checker());
+	auto sphereTexture = std::make_shared<qbRT::Texture::Checker> (qbRT::Texture::Checker());
+	auto cylinderTexture = std::make_shared<qbRT::Texture::Checker> (qbRT::Texture::Checker());
+	auto coneTexture = std::make_shared<qbRT::Texture::Checker> (qbRT::Texture::Checker());
+
+	// Setup the textures.
+	floorTexture -> SetColor(qbVector<double>{std::vector<double>{1.0, 0.5, 0.0}}, qbVector<double>{std::vector<double>{0.8, 0.8, 0.2}});
+	floorTexture -> SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0}},
+								 0.0,
+								 qbVector<double>{std::vector<double>{16.0, 16.0}} );
+																
+	sphereTexture -> SetColor(qbVector<double>{std::vector<double>{0.2, 0.2, 0.8}}, qbVector<double>{std::vector<double>{0.8, 0.8, 0.2}});
+	sphereTexture -> SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0}},
+								  0.0,
+								  qbVector<double>{std::vector<double>{16.0, 16.0}} );
+																	
+	cylinderTexture -> SetColor(qbVector<double>{std::vector<double>{1.0, 0.0, 0.0}}, qbVector<double>{std::vector<double>{0.8, 0.8, 0.2}});
+	cylinderTexture -> SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0}},
+									0.0,
+									qbVector<double>{std::vector<double>{4.0*M_PI, 4.0}} );
+																		
+	coneTexture -> SetColor(qbVector<double>{std::vector<double>{0.2, 0.2, 0.8}}, qbVector<double>{std::vector<double>{1.0, 0.5, 0.0}});
+	coneTexture -> SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0}},
+								0.0,
+								qbVector<double>{std::vector<double>{8.0*(M_PI/2.0), 8.0}} );
+
 
 
     // Create some materials.
@@ -39,14 +68,16 @@ qbRT::Scene::Scene()
     silverMetal -> m_baseColor = qbVector<double>{std::vector<double>{0.5, 0.5, 0.8}};
 	silverMetal -> m_reflectivity = 0.50;
 	silverMetal -> m_shininess = 20.0;
+	silverMetal -> AssignTexture(coneTexture);
 	
 	goldMetal -> m_baseColor = qbVector<double>{std::vector<double>{0.96, 0.90, 0.34}};
 	goldMetal -> m_reflectivity = 0.25;
 	goldMetal -> m_shininess = 20.0;
 	
 	blueDiffuse -> m_baseColor = qbVector<double>{std::vector<double>{0.007, 0.8, 0.96}};
-	blueDiffuse -> m_reflectivity = 0.0;
+	blueDiffuse -> m_reflectivity = 0.5;
 	blueDiffuse -> m_shininess = 30.0;
+	
 	
 	yellowDiffuse -> m_baseColor = qbVector<double>{std::vector<double>{0.8, 0.8, 0.2}};
 	yellowDiffuse -> m_reflectivity = 0.5;
@@ -55,10 +86,13 @@ qbRT::Scene::Scene()
 	orangeDiffuse -> m_baseColor = qbVector<double>{std::vector<double>{0.81, 0.39, 0.0}};
 	orangeDiffuse -> m_reflectivity = 0.50;
 	orangeDiffuse -> m_shininess = 15.0;
+	orangeDiffuse -> AssignTexture(sphereTexture);
+	
 
 	redMetal -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 0.0, 0.0}};
 	redMetal -> m_reflectivity = 0.5;
 	redMetal -> m_shininess = 20.0;
+	//redMetal -> AssignTexture(cylinderTexture);
 
 	/*testMaterial1 -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 1.0, 0.0}};
 	testMaterial1 -> m_reflectivity = 0.50;
@@ -88,6 +122,7 @@ qbRT::Scene::Scene()
     floorMaterial -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 1.0, 1.0}};
 	floorMaterial -> m_reflectivity = 0.50;
 	floorMaterial -> m_shininess = 8.0;
+	floorMaterial -> AssignTexture(floorTexture);
 
 	wallMaterial1 -> m_baseColor = qbVector<double>{std::vector<double>{0.45, 0.32, 0.89}}; //purple
 	wallMaterial1 -> m_reflectivity = 0.50;
@@ -276,6 +311,16 @@ qbRT::Scene::Scene()
 
 
    // Construct and setup the lights.
+	/*m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
+	m_lightList.at(0) -> m_location = qbVector<double> {std::vector<double> {3.0, -10.0, -5.0}};
+	m_lightList.at(0) -> m_color = qbVector<double> {std::vector<double> {1.0, 1.0, 1.0}};
+	
+	m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
+	m_lightList.at(1) -> m_location = qbVector<double> {std::vector<double> {0.0, -10.0, -5.0}};
+	m_lightList.at(1) -> m_color = qbVector<double> {std::vector<double> {1.0, 1.0, 1.0}}; */
+
+
+	// Construct and setup the lights.
 	m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
 	m_lightList.at(0) -> m_location = qbVector<double> {std::vector<double> {3.0, -10.0, -5.0}};
 	m_lightList.at(0) -> m_color = qbVector<double> {std::vector<double> {1.0, 1.0, 1.0}};
@@ -283,6 +328,16 @@ qbRT::Scene::Scene()
 	m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
 	m_lightList.at(1) -> m_location = qbVector<double> {std::vector<double> {0.0, -10.0, -5.0}};
 	m_lightList.at(1) -> m_color = qbVector<double> {std::vector<double> {1.0, 1.0, 1.0}};
+	
+	m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
+	m_lightList.at(2) -> m_location = qbVector<double> {std::vector<double> {-2.0, 2.0, 0.0}};
+	m_lightList.at(2) -> m_color = qbVector<double> {std::vector<double> {1.0, 0.8, 0.8}};
+	m_lightList.at(2) -> m_intensity = 0.5;
+	
+	m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
+	m_lightList.at(3) -> m_location = qbVector<double> {std::vector<double> {4.0, 2.0, 0.0}};
+	m_lightList.at(3) -> m_color = qbVector<double> {std::vector<double> {1.0, 0.8, 0.8}};
+	m_lightList.at(3) -> m_intensity = 0.5;	
 
 }
 

@@ -1,6 +1,9 @@
 #ifndef OBJSPHERE_H
 #define OBJSPHERE_H
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include "objectbase.hpp"
 #include "gtfm.hpp"
 

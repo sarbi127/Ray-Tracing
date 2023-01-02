@@ -1,6 +1,9 @@
 #ifndef CYLINDER_H
 #define CYLINDER_H
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include <array>
 #include "objectbase.hpp"
 #include "gtfm.hpp"
