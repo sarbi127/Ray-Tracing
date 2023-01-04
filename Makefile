@@ -1,2 +1,2 @@
 all:
-	g++ -I src/include -L src/lib -o main main.cpp CApp.cpp qbImage.cpp scene.cpp ray.cpp camera.cpp objectbase.cpp objsphere.cpp lightbase.cpp pointlight.cpp objplane.cpp materialbase.cpp simplematerial.cpp cylinder.cpp cone.cpp texturebase.cpp flat.cpp checker.cpp gtfm.cpp -lmingw32 -lSDL2main -lSDL2 -std=c++17 -Ofast
+	g++ -I src/include -L src/lib -o main main.cpp CApp.cpp qbImage.cpp scene.cpp ray.cpp camera.cpp objectbase.cpp objsphere.cpp lightbase.cpp pointlight.cpp objplane.cpp materialbase.cpp simplematerial.cpp cylinder.cpp cone.cpp texturebase.cpp flat.cpp checker.cpp image.cpp gtfm.cpp -lmingw32 -lSDL2main -lSDL2 -std=c++17 -Ofast

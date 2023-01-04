@@ -85,10 +85,11 @@ bool qbRT::ObjSphere::TestIntersection(const qbRT::Ray &castRay, qbVector<double
 			double x = poi.GetElement(0);
 			double y = poi.GetElement(1);
 			double z = poi.GetElement(2);
-			double u = atan(sqrtf(pow(x, 2.0) + pow(y, 2.0)) / z);
-			double v = atan(y/x);
-			if (x < 0)
-				v += M_PI;
+			double u = atan2(sqrtf(pow(x, 2.0) + pow(y, 2.0)), z);
+			double v = atan2(y, x);
+			
+			//if (x < 0)
+				//v += M_PI;
 
 			//normaliaze between -1 and 1.	
 			u /= M_PI;

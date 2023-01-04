@@ -38,19 +38,9 @@ namespace qbRT
                 private:
                     // Initialise the transform matrix to the identity matrix.
                     qbMatrix2<double> m_transformMatrix {3, 3, std::vector<double>{1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0}};
-                        
-
-
-
-
-
-
-
+    
                      
                 };
-           
-            
-
 
     } // namespace Texture
     
