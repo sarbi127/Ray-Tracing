@@ -50,20 +50,58 @@ bool qbRT::ObjSphere::TestIntersection(const qbRT::Ray &castRay, qbVector<double
 		
 		/* If either t1 or t2 are negative, then at least part of the object is
 			behind the camera and so we will ignore it. */
-		if ((t1 < 0.0) || (t2 < 0.0))
+		if ((t1 < 0.0) && (t2 < 0.0))
 		{
 			return false;
 		}
 		else
 		{
 			// Determine which point of intersection was closest to the camera.
-			if (t1 < t2)
+			/*if (t1 < t2)
 			{
 				poi = bckRay.m_point1 + (vhat * t1);
 			}
 			else
 			{
 				poi = bckRay.m_point1 + (vhat * t2);
+			}*/
+
+			// Determine which point of intersection was closest to the camera.
+			if (t1 < t2)
+			{
+				if (t1 > 0.0)
+				{
+					poi = bckRay.m_point1 + (vhat * t1);
+				}
+				else
+				{
+					if (t2 > 0.0)
+					{
+						poi = bckRay.m_point1 + (vhat * t2);
+					}
+					else
+					{
+						return false;
+					}
+				}
+			}
+			else
+			{
+				if (t2 > 0.0)
+				{
+					poi = bckRay.m_point1 + (vhat * t2);
+				}
+				else
+				{
+					if (t1 > 0.0)
+					{
+						poi = bckRay.m_point1 + (vhat * t1);
+					}
+					else
+					{
+						return false;
+					}
+				}
 			}
 
             // Transform the intersection point back into world coordinates.
