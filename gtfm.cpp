@@ -1,18 +1,18 @@
 #include "gtfm.hpp"
+//#include "qbutils.hpp"
 
 // Constructor / destructor.
 qbRT::GTform::GTform()
 {
-    /* Set forward and backward transforms to
-	identity matrices. */
-    m_fwdtfm.SetToIdentity();
-    m_bcktfm.SetToIdentity();
-
+	/* Set forward and backward transforms to
+		identity matrices. */
+	m_fwdtfm.SetToIdentity();
+	m_bcktfm.SetToIdentity();
+	ExtractLinearTransform();
 }
 
 qbRT::GTform::~GTform()
 {
-   
 
 }
 
@@ -20,99 +20,97 @@ qbRT::GTform::~GTform()
 qbRT::GTform::GTform(const qbVector<double> &translation, const qbVector<double> &rotation, const qbVector<double> &scale)
 {
 	SetTransform(translation, rotation, scale);
+	ExtractLinearTransform();
 }
 
 // Construct from a pair of matrices.
 qbRT::GTform::GTform(const qbMatrix2<double> &fwd, const qbMatrix2<double> &bck)
 {
-  // Verify that the inputs are 4x4.
+	// Verify that the inputs are 4x4.
 	if (	(fwd.GetNumRows() != 4) || (fwd.GetNumCols() != 4) ||
-		(bck.GetNumRows() != 4) || (bck.GetNumCols() != 4))
+				(bck.GetNumRows() != 4) || (bck.GetNumCols() != 4))
 	{
 		throw std::invalid_argument("Cannot construct GTform, inputs are not all 4x4.");
 	}
 	
 	m_fwdtfm = fwd;
 	m_bcktfm = bck;
-
+	ExtractLinearTransform();
 }
 
-
 // Function to set the transform.
-void qbRT::GTform::SetTransform(const qbVector<double> &translation,
-				                const qbVector<double> &rotation,
-				                const qbVector<double> &scale)
+void qbRT::GTform::SetTransform(	const qbVector<double> &translation,
+																	const qbVector<double> &rotation,
+																	const qbVector<double> &scale)
 {
-
-     
-    // Define a matrix for each component of the transform.
+	// Define a matrix for each component of the transform.
 	qbMatrix2<double> translationMatrix	{4, 4};
-	qbMatrix2<double> rotationMatrixX	{4, 4};
-	qbMatrix2<double> rotationMatrixY	{4, 4};
-	qbMatrix2<double> rotationMatrixZ	{4, 4};
-	qbMatrix2<double> scaleMatrix	    {4, 4};
-
-    // Set these to identity.
-    translationMatrix.SetToIdentity();
-    rotationMatrixX.SetToIdentity();
-    rotationMatrixY.SetToIdentity();
-    rotationMatrixZ.SetToIdentity();
-    scaleMatrix.SetToIdentity();
-
-    // Populate these with the appropriate values.
+	qbMatrix2<double> rotationMatrixX		{4, 4};
+	qbMatrix2<double>	rotationMatrixY		{4, 4};
+	qbMatrix2<double> rotationMatrixZ		{4, 4};
+	qbMatrix2<double>	scaleMatrix				{4, 4};
+	
+	// Set these to identity.
+	translationMatrix.SetToIdentity();
+	rotationMatrixX.SetToIdentity();
+	rotationMatrixY.SetToIdentity();
+	rotationMatrixZ.SetToIdentity();
+	scaleMatrix.SetToIdentity();
+	
+	// Populate these with the appropriate values.
 	// First the translation matrix.
-    translationMatrix.SetElement(0, 3, translation.GetElement(0));
+	translationMatrix.SetElement(0, 3, translation.GetElement(0));
 	translationMatrix.SetElement(1, 3, translation.GetElement(1));
 	translationMatrix.SetElement(2, 3, translation.GetElement(2));
-
-    // Rotation matrices.
-    //z
+	
+	// Rotation matrices.
 	rotationMatrixZ.SetElement(0, 0, cos(rotation.GetElement(2)));
 	rotationMatrixZ.SetElement(0, 1, -sin(rotation.GetElement(2)));
 	rotationMatrixZ.SetElement(1, 0, sin(rotation.GetElement(2)));
 	rotationMatrixZ.SetElement(1, 1, cos(rotation.GetElement(2)));
-
-    //y
-    rotationMatrixY.SetElement(0, 0, cos(rotation.GetElement(1)));
+	
+	rotationMatrixY.SetElement(0, 0, cos(rotation.GetElement(1)));
 	rotationMatrixY.SetElement(0, 2, sin(rotation.GetElement(1)));
 	rotationMatrixY.SetElement(2, 0, -sin(rotation.GetElement(1)));
 	rotationMatrixY.SetElement(2, 2, cos(rotation.GetElement(1)));
-
-    //x
-    rotationMatrixX.SetElement(1, 1, cos(rotation.GetElement(0)));
+	
+	rotationMatrixX.SetElement(1, 1, cos(rotation.GetElement(0)));
 	rotationMatrixX.SetElement(1, 2, -sin(rotation.GetElement(0)));
 	rotationMatrixX.SetElement(2, 1, sin(rotation.GetElement(0)));
 	rotationMatrixX.SetElement(2, 2, cos(rotation.GetElement(0)));
-
-    // And the scale matrix.
-    scaleMatrix.SetElement(0, 0, scale.GetElement(0));
+	
+	// And the scale matrix.
+	scaleMatrix.SetElement(0, 0, scale.GetElement(0));
 	scaleMatrix.SetElement(1, 1, scale.GetElement(1));
 	scaleMatrix.SetElement(2, 2, scale.GetElement(2));
-
-
-   // Combine to give the final forward transform matrix.
+	
+	// Combine to give the final forward transform matrix.
 	m_fwdtfm =	translationMatrix * 
-			    rotationMatrixX *
-			    rotationMatrixY *
-			    rotationMatrixZ *
-				scaleMatrix;
+							rotationMatrixX *
+							rotationMatrixY *
+							rotationMatrixZ *
+							scaleMatrix;
 							
 	// Compute the backwards transform.
 	m_bcktfm = m_fwdtfm;
 	m_bcktfm.Inverse();		
+}
 
+void qbRT::GTform::SetTransform(const qbMatrix2<double> &fwd, const qbMatrix2<double> &bck)
+{
+	m_fwdtfm = fwd;
+	m_bcktfm = bck;
+	ExtractLinearTransform();
 }
 
 // Functions to return the transform matrices.
 qbMatrix2<double> qbRT::GTform::GetForward()
 {
-    return m_fwdtfm;
+	return m_fwdtfm;
 }
-
-
 qbMatrix2<double> qbRT::GTform::GetBackward()
 {
-    return m_bcktfm;
+	return m_bcktfm;
 }
 
 // Function to apply the transform.
@@ -143,9 +141,9 @@ qbVector<double> qbRT::GTform::Apply(const qbVector<double> &inputVector, bool d
 {
 	// Convert inputVector to a 4-element vector.
 	std::vector<double> tempData {	inputVector.GetElement(0),
-					inputVector.GetElement(1),
-					inputVector.GetElement(2),
-					1.0 };
+																	inputVector.GetElement(1),
+																	inputVector.GetElement(2),
+																	1.0 };
 	qbVector<double> tempVector {tempData};
 	
 	// Create a vector for the result.
@@ -164,10 +162,19 @@ qbVector<double> qbRT::GTform::Apply(const qbVector<double> &inputVector, bool d
 	
 	// Reform the output as a 3-element vector.
 	qbVector<double> outputVector {std::vector<double> {	resultVector.GetElement(0),
-								resultVector.GetElement(1),
-								resultVector.GetElement(2) }};
+																												resultVector.GetElement(1),
+																												resultVector.GetElement(2) }};
 																					
 	return outputVector;
+}
+
+qbVector<double> qbRT::GTform::ApplyNorm(const qbVector<double> &inputVector)
+{
+
+	// Apply the transform and return the result.
+	qbVector<double> result = m_lintfm * inputVector;
+	return result;
+	
 }
 
 // Overload operators.
@@ -197,6 +204,7 @@ qbRT::GTform qbRT::GTform::operator= (const qbRT::GTform &rhs)
 	{
 		m_fwdtfm = rhs.m_fwdtfm;
 		m_bcktfm = rhs.m_bcktfm;
+		ExtractLinearTransform();
 	}
 	
 	return *this;
@@ -239,3 +247,26 @@ void qbRT::GTform::PrintVector(const qbVector<double> &inputVector)
 	}
 }
 
+// Function to extract the linear portion of the transform.
+void qbRT::GTform::ExtractLinearTransform()
+{
+	// Copy the linear portion of the transform.
+	for (int i=0; i<3; ++i)
+	{
+		for (int j=0; j<3; ++j)
+		{
+			m_lintfm.SetElement(i, j, m_fwdtfm.GetElement(i, j));
+		}
+	}
+	
+	// Invert and transpose.
+	m_lintfm.Inverse();
+	m_lintfm = m_lintfm.Transpose();
+	
+}
+
+// Function to return the normal transform.
+qbMatrix2<double> qbRT::GTform::GetNormalTransform()
+{
+	return m_lintfm;
+}

@@ -108,12 +108,16 @@ bool qbRT::ObjSphere::TestIntersection(const qbRT::Ray &castRay, qbVector<double
 			intPoint = m_transformMatrix.Apply(poi, qbRT::FWDTFORM);
 
 			// Compute the local normal (easy for a sphere at the origin!).
-			qbVector<double> objOrigin = qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}}; // local coordinate.
-			qbVector<double> newObjOrigin = m_transformMatrix.Apply(objOrigin, qbRT::FWDTFORM); // world coordinate.
+			//qbVector<double> objOrigin = qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}}; // local coordinate.
+			//qbVector<double> newObjOrigin = m_transformMatrix.Apply(objOrigin, qbRT::FWDTFORM); // world coordinate.
 
 
 			// Compute the local normal (easy for a sphere at the origin!).
-			localNormal = intPoint - newObjOrigin;
+			//localNormal = intPoint - newObjOrigin;
+			//localNormal.Normalize();
+
+			qbVector<double> normalVector = poi;
+			localNormal = m_transformMatrix.ApplyNorm(normalVector);
 			localNormal.Normalize();
 
 			// Return the base color.

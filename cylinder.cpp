@@ -153,9 +153,12 @@ bool qbRT::Cylinder::TestIntersection(const qbRT::Ray &castRay, qbVector<double>
 		orgNormal.SetElement(0, validPOI.GetElement(0));
 		orgNormal.SetElement(1, validPOI.GetElement(1));
 		orgNormal.SetElement(2, 0.0);
-		newNormal = m_transformMatrix.Apply(orgNormal, qbRT::FWDTFORM) - globalOrigin;
-		newNormal.Normalize();
-		localNormal = newNormal;
+		//newNormal = m_transformMatrix.Apply(orgNormal, qbRT::FWDTFORM) - globalOrigin;
+		//newNormal.Normalize();
+		//localNormal = newNormal;
+
+		localNormal = m_transformMatrix.ApplyNorm(orgNormal);
+		localNormal.Normalize();
 		
 		// Return the base color.
 		localColor = m_baseColor;
@@ -185,12 +188,17 @@ bool qbRT::Cylinder::TestIntersection(const qbRT::Ray &castRay, qbVector<double>
 				intPoint = m_transformMatrix.Apply(validPOI, qbRT::FWDTFORM);
 				
 				// Compute the local normal.
-				qbVector<double> localOrigin {std::vector<double> {0.0, 0.0, 0.0}};
-				qbVector<double> normalVector {std::vector<double> {0.0, 0.0, 0.0 + validPOI.GetElement(2)}};
-				qbVector<double> globalOrigin = m_transformMatrix.Apply(localOrigin, qbRT::FWDTFORM);
-				localNormal = m_transformMatrix.Apply(normalVector, qbRT::FWDTFORM) - globalOrigin;
-				localNormal.Normalize();
+				//qbVector<double> localOrigin {std::vector<double> {0.0, 0.0, 0.0}};
+				//qbVector<double> normalVector {std::vector<double> {0.0, 0.0, 0.0 + validPOI.GetElement(2)}};
+				//qbVector<double> globalOrigin = m_transformMatrix.Apply(localOrigin, qbRT::FWDTFORM);
+				//localNormal = m_transformMatrix.Apply(normalVector, qbRT::FWDTFORM) - globalOrigin;
+				//localNormal.Normalize();
 				
+				qbVector<double> normalVector {std::vector<double> {0.0, 0.0, 0.0 + validPOI.GetElement(2)}};
+				localNormal = m_transformMatrix.ApplyNorm(normalVector);
+				localNormal.Normalize();
+
+
 				// Return the base color.
 				localColor = m_baseColor;
 
