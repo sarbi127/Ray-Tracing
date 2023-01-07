@@ -55,7 +55,7 @@ qbRT::Scene::Scene()
 								0.0,
 								qbVector<double>{std::vector<double>{8.0*(M_PI/2.0), 8.0}} );
 
-    imageTexture -> LoadImage("bmp_24.bmp");
+    imageTexture -> LoadImage("bmp_13.bmp");
 	imageTexture -> SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0}},
 								 0.0,
 								 qbVector<double>{std::vector<double>{1.0, 1.0}});
@@ -172,11 +172,17 @@ qbRT::Scene::Scene()
 	
 
 	//create and setup objects.
-	auto cone = std::make_shared<qbRT::Cone> (qbRT::Cone());
+	/*auto cone = std::make_shared<qbRT::Cone> (qbRT::Cone());
 	cone -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{0.0, 0.0, -0.5}},
 											 qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
 											 qbVector<double>{std::vector<double>{1.0, 1.0, 2.0}}});
-	cone -> AssignMaterial(silverMetal);
+	cone -> AssignMaterial(silverMetal);*/
+
+	auto box = std::make_shared<qbRT::Box> (qbRT::Box());
+	box -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{0.0, 0.0, -0.5}},
+											 qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+											 qbVector<double>{std::vector<double>{1.0, 1.0, 2.0}}});
+	box -> AssignMaterial(silverMetal);
 	
 	/*auto leftSphere = std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere());
 	leftSphere -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{1.0, -2.0, 0.5}},
@@ -281,6 +287,7 @@ qbRT::Scene::Scene()
 	m_objectList.push_back(Sphere1);
 	m_objectList.push_back(Sphere2);
 	m_objectList.push_back(rightSphere2);
+	m_objectList.push_back(box);
 
 	// Construct a test sphere.
 	/*m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));

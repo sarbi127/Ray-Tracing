@@ -10,6 +10,7 @@
 #include "objplane.hpp"
 #include "cylinder.hpp"
 #include "cone.hpp"
+#include "box.hpp"
 #include "pointlight.hpp"
 
 
