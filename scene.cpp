@@ -3,6 +3,7 @@
 #include "simplerefractive.hpp"
 #include "checker.hpp"
 #include "image.hpp"
+#include "raymarchbase.hpp"
 
 using namespace std;
 
@@ -55,7 +56,7 @@ qbRT::Scene::Scene()
 								0.0,
 								qbVector<double>{std::vector<double>{8.0*(M_PI/2.0), 8.0}} );
 
-    imageTexture -> LoadImage("bmp_13.bmp");
+    imageTexture -> LoadImage("bmp_243.bmp");
 	imageTexture -> SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0}},
 								 0.0,
 								 qbVector<double>{std::vector<double>{1.0, 1.0}});
@@ -79,6 +80,7 @@ qbRT::Scene::Scene()
 	auto imageMaterial = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
 	auto sphereMaterial = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
 	auto glassMaterial = std::make_shared<qbRT::SimpleRefractive> (qbRT::SimpleRefractive());
+	auto glassMaterial2 = std::make_shared<qbRT::SimpleRefractive> (qbRT::SimpleRefractive());
 
    // Setup the materials.
     silverMetal -> m_baseColor = qbVector<double>{std::vector<double>{0.5, 0.5, 0.8}};
@@ -169,21 +171,74 @@ qbRT::Scene::Scene()
 	glassMaterial -> m_shininess = 32.0;
 	glassMaterial -> m_translucency = 0.75;
 	glassMaterial -> m_ior = 1.333;	//for water
-	
+
+
+	glassMaterial2 -> m_baseColor = qbVector<double>{std::vector<double>{0.7, 0.7, 0.2}};
+	glassMaterial2 -> m_reflectivity = 0.5;
+	glassMaterial2 -> m_shininess = 35.0;
+	glassMaterial2 -> m_translucency = 0.50;
+	glassMaterial2 -> m_ior = 1.333;	//for water
+
 
 	//create and setup objects.
+
+    //***********************************
+    // ray marching
+	//***********************************
+    auto torus_RM = std::make_shared<qbRT::RM::Torus> (qbRT::RM::Torus());
+	//torus -> m_tag = "torus";
+	torus_RM -> m_isVisible = true;
+	torus_RM -> SetRadii(0.7, 0.3);
+	torus_RM -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{2.25, 0.0, 0.20}},
+											     qbVector<double>{std::vector<double>{-M_PI/2.0, 0.0, 0.0}},
+											     qbVector<double>{std::vector<double>{0.85, 0.85, 0.85}}});
+	torus_RM -> AssignMaterial(glassMaterial);
+
+
+	auto Sphere_RM1 = std::make_shared<qbRT::RM::Sphere> (qbRT::RM::Sphere());
+	Sphere_RM1 -> m_isVisible = true;
+	Sphere_RM1 -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{-2.0, -0.5, 0.25}},
+												  qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+												  qbVector<double>{std::vector<double>{0.75, 0.75, 0.75}}});
+	Sphere_RM1 -> AssignMaterial(glassMaterial2);
+
+	auto Sphere_RM2 = std::make_shared<qbRT::RM::Sphere> (qbRT::RM::Sphere());
+	Sphere_RM2 -> m_isVisible = true;
+	Sphere_RM2 -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{-2.0, -1.25, -1.0}},
+												  qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+												  qbVector<double>{std::vector<double>{0.75, 0.75, 0.75}}});
+	Sphere_RM2 -> AssignMaterial(glassMaterial2);
+
+	auto Sphere_RM3 = std::make_shared<qbRT::RM::Sphere> (qbRT::RM::Sphere());
+	Sphere_RM3 -> m_isVisible = true;
+	Sphere_RM3 -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{-2.0, -2.0, 0.25}},
+												  qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+												  qbVector<double>{std::vector<double>{0.75, 0.75, 0.75}}});
+	Sphere_RM3 -> AssignMaterial(glassMaterial2);
+
+
+   	auto cube_RM = std::make_shared<qbRT::RM::Cube> (qbRT::RM::Cube());
+	cube_RM -> m_isVisible = true;
+	cube_RM -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{0.0, 0.0, 0.25}},
+											    qbVector<double>{std::vector<double>{0.0, -M_PI/4.0, 0.0}},
+											    qbVector<double>{std::vector<double>{0.50, 0.50, 0.50}}});
+	cube_RM -> AssignMaterial(blueDiffuse);
+
+
+    //*************************************
+
 	/*auto cone = std::make_shared<qbRT::Cone> (qbRT::Cone());
 	cone -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{0.0, 0.0, -0.5}},
 											 qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
 											 qbVector<double>{std::vector<double>{1.0, 1.0, 2.0}}});
 	cone -> AssignMaterial(silverMetal);*/
-
+	
 	auto box = std::make_shared<qbRT::Box> (qbRT::Box());
 	box -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{0.0, 0.0, -0.5}},
 											 qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
 											 qbVector<double>{std::vector<double>{1.0, 1.0, 2.0}}});
 	box -> AssignMaterial(silverMetal);
-	
+
 	/*auto leftSphere = std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere());
 	leftSphere -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{1.0, -2.0, 0.5}},
 												   qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
@@ -274,8 +329,8 @@ qbRT::Scene::Scene()
     // Put the objects into the scene.
 	//m_objectList.push_back(cone);
 	//m_objectList.push_back(leftSphere);
-	m_objectList.push_back(rightSphere);
-	m_objectList.push_back(topSphere);
+	//m_objectList.push_back(rightSphere);
+	//m_objectList.push_back(topSphere);
 	m_objectList.push_back(floor);
 	m_objectList.push_back(leftWall);
 	m_objectList.push_back(backWall);
@@ -284,10 +339,15 @@ qbRT::Scene::Scene()
 	//m_objectList.push_back(cylinder2);
 	//m_objectList.push_back(cone2);
 	m_objectList.push_back(imagePlane);
-	m_objectList.push_back(Sphere1);
-	m_objectList.push_back(Sphere2);
-	m_objectList.push_back(rightSphere2);
-	m_objectList.push_back(box);
+	//m_objectList.push_back(Sphere1);
+	//m_objectList.push_back(Sphere2);
+	//m_objectList.push_back(rightSphere2);
+	//m_objectList.push_back(box);
+	m_objectList.push_back(torus_RM);
+	m_objectList.push_back(Sphere_RM1);
+	m_objectList.push_back(Sphere_RM2);
+	m_objectList.push_back(Sphere_RM3);
+	m_objectList.push_back(cube_RM);
 
 	// Construct a test sphere.
 	/*m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));

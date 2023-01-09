@@ -12,6 +12,9 @@
 #include "cone.hpp"
 #include "box.hpp"
 #include "pointlight.hpp"
+#include "torus.hpp"
+#include "sphere.hpp"
+#include "cube.hpp"
 
 
 namespace qbRT
