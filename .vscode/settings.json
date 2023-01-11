@@ -16,6 +16,14 @@
         "*.tcc": "cpp",
         "unordered_map": "cpp",
         "functional": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "bit": "cpp",
+        "cmath": "cpp",
+        "cwchar": "cpp",
+        "deque": "cpp",
+        "iosfwd": "cpp",
+        "numbers": "cpp",
+        "numeric": "cpp",
+        "utility": "cpp"
     }
 }
