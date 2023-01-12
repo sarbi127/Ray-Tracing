@@ -15,6 +15,7 @@
 #include "torus.hpp"
 #include "sphere.hpp"
 #include "cube.hpp"
+#include "simplerough.hpp"
 
 
 namespace qbRT
