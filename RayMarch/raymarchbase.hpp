@@ -3,8 +3,8 @@
 
 #include <functional>
 #include "sdfunc.hpp"
-#include "objectbase.hpp"
-#include "box.hpp"
+#include "../Primatives/objectbase.hpp"
+#include "../Primatives/box.hpp"
 
 namespace qbRT
 {

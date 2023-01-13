@@ -1,5 +1,5 @@
 #include "box.hpp"
-#include "qbutils.hpp"
+#include "../qbutils.hpp"
 #include <cmath>
 
 qbRT::Box::Box()

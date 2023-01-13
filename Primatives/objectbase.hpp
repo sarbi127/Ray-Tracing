@@ -4,9 +4,10 @@
 #define OBJECTBASE_H
 
 #include <memory>
-#include "qbVector.h"
-#include "ray.hpp"
-#include "gtfm.hpp"
+#include "../qbutils.hpp"
+#include "../qbVector.h"
+#include "../ray.hpp"
+#include "../gtfm.hpp"
 
 namespace qbRT
 {

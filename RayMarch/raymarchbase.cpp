@@ -1,5 +1,5 @@
 #include "raymarchbase.hpp"
-#include "qbutils.hpp"
+#include "../qbutils.hpp"
 
 // Constructor.
 qbRT::RM::RayMarchBase::RayMarchBase()

@@ -1,5 +1,5 @@
 #include "checker.hpp"
-#include "flat.hpp"
+#include "./flat.hpp"
 
 // Constructor / destructor.
 qbRT::Texture::Checker::Checker()

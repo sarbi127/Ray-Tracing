@@ -5,8 +5,8 @@
 #include "qbImage.hpp"
 #include "Scene.hpp"
 #include "camera.hpp"
-#include "flat.hpp"
-#include "checker.hpp"
+#include "./Textures/flat.hpp"
+#include "./Textures/checker.hpp"
 
 const int WIDTH = 1200, HEIGHT = 700;
 

@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "qbVector.h"
+#include "./qbVector.h"
 #include "ray.hpp"
 
 namespace qbRT

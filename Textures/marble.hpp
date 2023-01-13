@@ -5,7 +5,7 @@
     #define M_PI 3.14159265358979323846
 #endif
 
-#include "grdnoisegenerator.hpp"
+#include "../Noise/grdnoisegenerator.hpp"
 #include "texturebase.hpp"
 #include "colormap.hpp"
 

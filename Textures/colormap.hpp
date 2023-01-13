@@ -1,7 +1,7 @@
 #ifndef COLORMAP_H
 #define COLORMAP_H
 
-#include "qbVector.h"
+#include "../qbVector.h"
 
 namespace qbRT
 {

@@ -2,12 +2,12 @@
 #define MATERIALBASE_H
 
 #include <memory>
-#include "normalbase.hpp"
-#include "texturebase.hpp"
-#include "objectbase.hpp"
-#include "lightbase.hpp"
-#include "qbVector.h"
-#include "ray.hpp"
+#include "../Normals/normalbase.hpp"
+#include "../Textures/texturebase.hpp"
+#include "../Primatives/objectbase.hpp"
+#include "../Lights/lightbase.hpp"
+#include "../qbVector.h"
+#include "../ray.hpp"
 
 namespace qbRT
 {

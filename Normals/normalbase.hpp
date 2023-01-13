@@ -2,10 +2,10 @@
 #define NORMALBASE_H
 
 #include <memory>
-#include "qbMatrix.h"
-#include "qbVector.h"
-#include "ray.hpp"
-#include "texturebase.hpp"
+#include "../qbMatrix.h"
+#include "../qbVector.h"
+#include "../ray.hpp"
+#include "../Textures/texturebase.hpp"
 
 namespace qbRT
 {
@@ -24,8 +24,8 @@ namespace qbRT
 				// Function to perturb the given normal.
 				qbVector<double> PerturbNormal(const qbVector<double> &normal, const qbVector<double> &perturbation);
 				
-				// *** Function to perform numerical differentiation of a texture in UV space.
-				//qbVector<double> TextureDiff(const std::shared_ptr<qbRT::Texture::TextureBase> &inputTexture, const qbVector<double> &uvCoords);				
+				// Function to perform numerical differentiation of a texture in UV space.
+				qbVector<double> TextureDiff(const std::shared_ptr<qbRT::Texture::TextureBase> &inputTexture, const qbVector<double> &uvCoords);				
 				
 				// Function to set the amplitude scale.
 				void SetAmplitude(double amplitude);

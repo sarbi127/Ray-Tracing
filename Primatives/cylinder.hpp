@@ -1,28 +1,30 @@
-#ifndef CONE_H
-#define CONE_H
+#ifndef CYLINDER_H
+#define CYLINDER_H
 
 #define _USE_MATH_DEFINES
 #include <cmath>
 
 #include <array>
 #include "objectbase.hpp"
-#include "gtfm.hpp"
+#include "../gtfm.hpp"
 
 namespace qbRT
 {
-	class Cone : public ObjectBase
+	class Cylinder : public ObjectBase
 	{
 		public:
 			// Default constructor.
-			Cone();
+			Cylinder();
 			
 			// Override the destructor.
-			virtual ~Cone() override;
+			virtual ~Cylinder() override;
 			
 			// Override the function to test for intersections.
 			virtual bool TestIntersection(const qbRT::Ray &castRay, qbVector<double> &intPoint,
-										  qbVector<double> &localNormal, qbVector<double> &localColor) override;			
+										  qbVector<double> &localNormal, qbVector<double> &localColor) override;
 	};
 }
 
 #endif
+
+

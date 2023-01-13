@@ -1,7 +1,7 @@
 #ifndef SDFUNC_H
 #define SDFFUNC_H
 
-#include "qbVector.h"
+#include "../qbVector.h"
 
 namespace qbRT
 {

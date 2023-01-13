@@ -1,13 +1,13 @@
 #include "Scene.hpp"
-#include "simplematerial.hpp"
-#include "simplerefractive.hpp"
-#include "checker.hpp"
-#include "image.hpp"
-#include "raymarchbase.hpp"
-#include "gradient.hpp"
-#include "basicvalnoise.hpp"
-#include "basicnoise.hpp"
-#include "marble.hpp"
+#include "./Materials/simplematerial.hpp"
+#include "./Materials/simplerefractive.hpp"
+#include "./Textures/checker.hpp"
+#include "./Textures/image.hpp"
+#include "./Textures/gradient.hpp"
+#include "./Textures/basicvalnoise.hpp"
+#include "./Textures/basicnoise.hpp"
+#include "./Textures/marble.hpp"
+#include "./Textures/qbStone1.hpp"
 
 using namespace std;
 
@@ -18,10 +18,10 @@ qbRT::Scene::Scene()
 	//*************************************
 
 	//m_camera.SetPosition(	qbVector<double>{std::vector<double> {4.0, -8.0, -2.0}});
-	m_camera.SetPosition(	qbVector<double>{std::vector<double> {2.0, -5.0, -1.0}});
+	m_camera.SetPosition(qbVector<double>{std::vector<double> {2.0, -5.0, -1.0}});
 	//m_camera.SetPosition( qbVector<double>{std::vector<double> {-3.0, -5.0, -2.0}});
-	m_camera.SetLookAt	( qbVector<double>{std::vector<double> {-0.5, 0.0, 0.0}});
-	m_camera.SetUp		( qbVector<double>{std::vector<double> {0.0, 0.0, 1.0}});
+	m_camera.SetLookAt(qbVector<double>{std::vector<double> {-0.5, 0.0, 0.0}});
+	m_camera.SetUp(qbVector<double>{std::vector<double> {0.0, 0.0, 1.0}});
 	//m_camera.SetHorzSize(0.25);
 	//m_camera.SetHorzSize(0.85);
 	m_camera.SetHorzSize(1.0);
@@ -37,14 +37,6 @@ qbRT::Scene::Scene()
 	qbRT::MaterialBase::m_ambientColor = std::vector<double>{1.0, 1.0, 1.0};
 	//qbRT::MaterialBase::m_ambientIntensity = 0.2;
 	qbRT::MaterialBase::m_ambientIntensity = 0.0;
-
-
-    // **************************************
-	// Create and setup a simple normal map.
-	// **************************************
-
-	 auto normMap = std::make_shared<qbRT::Normal::SimpleRough> (qbRT::Normal::SimpleRough());
-	 normMap -> m_amplitudeScale = 0.20;
 
 
 	//*************************************
@@ -224,6 +216,23 @@ qbRT::Scene::Scene()
 	qbWood -> SetMinMax(-1.0, 1.0);
 	qbWood -> SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0}}, 0.0, qbVector<double>{std::vector<double>{1.0, 1.0}});	
 
+    // An instance of the stone texture.
+	auto stoneTexture = std::make_shared<qbRT::Texture::qbStone1> (qbRT::Texture::qbStone1());
+	stoneTexture -> SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0}},
+								 0.0,
+								 qbVector<double>{std::vector<double>{4.0, 4.0}});
+    
+	// *************************************
+	// Create and setup a simple normal map.
+	// *************************************
+
+	 auto normMap1 = std::make_shared<qbRT::Normal::SimpleRough> (qbRT::Normal::SimpleRough());
+	 normMap1 -> m_amplitudeScale = 0.20;
+
+	auto normMap2 = std::make_shared<qbRT::Normal::TextureNormal> (qbRT::Normal::TextureNormal());
+	normMap2 -> AssignBaseTexture(stoneTexture);
+	normMap2 -> m_scale = 0.015;
+    
     //*******************************
     // Create some materials.
 	//*******************************
@@ -298,7 +307,7 @@ qbRT::Scene::Scene()
 	floorMaterial -> m_reflectivity = 0.5;
 	floorMaterial -> m_shininess = 0.0;
 	floorMaterial -> AssignTexture(floorTexture2);
-	floorMaterial -> AssignNormalMap(normMap);
+	floorMaterial -> AssignNormalMap(normMap2);
 
     auto wallMaterial1 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
 	wallMaterial1 -> m_baseColor = qbVector<double>{std::vector<double>{0.45, 0.32, 0.89}}; //purple
@@ -398,6 +407,16 @@ qbRT::Scene::Scene()
 	woodMat -> m_reflectivity = 0.05;
 	woodMat -> m_shininess = 32.0;
 	woodMat -> AssignTexture(qbWood);		
+
+
+    // The stone material.
+	auto stoneMat = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
+	stoneMat -> m_baseColor = std::vector<double>{1.0, 1.0, 1.0};
+	stoneMat -> m_reflectivity = 0.35;
+	stoneMat -> m_shininess = 32.0;
+	stoneMat -> AssignTexture(stoneTexture);
+	stoneMat -> AssignNormalMap(normMap2);	
+
 
 	//***********************************
 	//create and setup objects.
@@ -504,12 +523,12 @@ qbRT::Scene::Scene()
 
 	auto Sphere1 = std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere());
 	Sphere1 -> m_isVisible = true;
-	Sphere1 -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{0.0, 3.0, 0.0}},
+	Sphere1 -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{0.0, 3.0, 0.25}},
 												     qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
 												     qbVector<double>{std::vector<double>{0.75, 0.75, 0.75}}});
 	//Sphere1 -> AssignMaterial(blueDiffuse);
-	//Sphere1 ->AssignMaterial(imageMaterial2);
-	Sphere1  ->AssignMaterial(cloudMat);
+	Sphere1 ->AssignMaterial(valNoiseMat2);
+	//Sphere1  ->AssignMaterial(cloudMat);
 
 	auto Sphere2 = std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere());
 	Sphere2 -> m_isVisible = true;
@@ -518,7 +537,7 @@ qbRT::Scene::Scene()
 												     qbVector<double>{std::vector<double>{0.75, 0.75, 0.75}}});
 	//Sphere2 -> AssignMaterial(orangeDiffuse);
 	//Sphere2 ->AssignMaterial(imageMaterial2);
-	Sphere2  ->AssignMaterial(woodMat);
+	Sphere2  ->AssignMaterial(valNoiseMat);
 	
 	auto floor = std::make_shared<qbRT::ObjPlane> (qbRT::ObjPlane());
 	floor -> m_isVisible = true;
@@ -526,6 +545,7 @@ qbRT::Scene::Scene()
 											  qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
 											  qbVector<double>{std::vector<double>{16.0, 16.0, 1.0}}});
 	floor -> AssignMaterial(floorMaterial);
+	
 
 
 	auto floor2 = std::make_shared<qbRT::ObjPlane> (qbRT::ObjPlane());
@@ -533,7 +553,8 @@ qbRT::Scene::Scene()
 	floor2 -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{0.0, 0.0, 0.5}},
 											   qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
 											   qbVector<double>{std::vector<double>{16.0, 16.0, 1.0}}});
-	floor2 -> AssignMaterial(floorMaterial);
+	//floor2 -> AssignMaterial(floorMaterial);
+	floor2 -> AssignMaterial(stoneMat);
 	
 	auto leftWall = std::make_shared<qbRT::ObjPlane> (qbRT::ObjPlane());
 	leftWall -> m_isVisible = true;

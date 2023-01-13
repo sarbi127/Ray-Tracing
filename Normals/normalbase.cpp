@@ -46,23 +46,23 @@ void qbRT::Normal::NormalBase::SetAmplitude(double amplitude)
 }
 
 // Function to perform numerical differentiation of a texture in UV space.
-//qbVector<double> qbRT::Normal::NormalBase::TextureDiff(const std::shared_ptr<qbRT::Texture::TextureBase> &inputTexture, const qbVector<double> &uvCoords)
-//{
+qbVector<double> qbRT::Normal::NormalBase::TextureDiff(const std::shared_ptr<qbRT::Texture::TextureBase> &inputTexture, const qbVector<double> &uvCoords)
+{
 	// We will use the symmetric difference quotient to estimate the partial derivatives of the texture
 	// at the point f(u,v).
 	// uGrad = f(u+h, v) - f(u-h, v) / 2h
 	// vGrad = f(u, v+h) - f(u, v-h) / 2h
-	/*double h = 0.001;
+	double h = 0.001;
 	qbVector<double> uDisp = std::vector<double> {h, 0.0};
 	qbVector<double> vDisp = std::vector<double> {0.0, h};
 	double uGrad = (inputTexture->GetValue(uvCoords + uDisp) - inputTexture->GetValue(uvCoords - uDisp)) / (2.0 * h);
 	double vGrad = (inputTexture->GetValue(uvCoords + vDisp) - inputTexture->GetValue(uvCoords - vDisp)) / (2.0 * h);
-	*/
+	
 	/* Form a vector for the output. 
 	*/
-	//qbVector<double> output = std::vector<double> {uGrad, vGrad};
-	//return output;
-//}
+	qbVector<double> output = std::vector<double> {uGrad, vGrad};
+	return output;
+}
 
 // Function to apply the transform.
 qbVector<double> qbRT::Normal::NormalBase::ApplyTransform(const qbVector<double> &inputVector)

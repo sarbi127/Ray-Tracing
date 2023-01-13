@@ -1,7 +1,8 @@
-#ifndef BASICVALNOISE_H
-#define BASICVALNOISE_H
+#ifndef BASICNOISE_H
+#define BASICNOISE_H
 
-#include "valnoisegenerator.hpp"
+#include "../Noise/grdnoisegenerator.hpp"
+#include "../Noise/valnoisegenerator.hpp"
 #include "texturebase.hpp"
 #include "colormap.hpp"
 
@@ -9,12 +10,12 @@ namespace qbRT
 {
 	namespace Texture
 	{
-		class BasicValNoise : public TextureBase
+		class BasicNoise : public TextureBase
 		{
 			public:
 				// Constructor / destructor.
-				BasicValNoise();
-				virtual ~BasicValNoise() override;
+				BasicNoise();
+				virtual ~BasicNoise() override;
 				
 				// Function to return the color.
 				virtual qbVector<double> GetColor(const qbVector<double> &uvCoords) override;
@@ -34,7 +35,7 @@ namespace qbRT
 				bool m_haveColorMap = false;
 				
 				// We need a NoiseGenerator instance.
-				qbRT::Noise::ValNoiseGenerator m_noiseGenerator;
+				qbRT::Noise::GrdNoiseGenerator m_noiseGenerator;
 				
 				// Store the amplitude.
 				double m_amplitude = 8.0;

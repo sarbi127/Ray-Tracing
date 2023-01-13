@@ -2,9 +2,9 @@
 #define LIGHTBASE_H
 
 #include <memory>
-#include "qbVector.h"
-#include "ray.hpp"
-#include "objectbase.hpp"
+#include "../qbVector.h"
+#include "../ray.hpp"
+#include "../Primatives/objectbase.hpp"
 
 namespace qbRT
 {

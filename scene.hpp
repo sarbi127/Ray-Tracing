@@ -6,16 +6,17 @@
 #include <SDL2/SDL.h>
 #include "qbImage.hpp"
 #include "camera.hpp"
-#include "objsphere.hpp"
-#include "objplane.hpp"
-#include "cylinder.hpp"
-#include "cone.hpp"
-#include "box.hpp"
-#include "pointlight.hpp"
-#include "torus.hpp"
-#include "sphere.hpp"
-#include "cube.hpp"
-#include "simplerough.hpp"
+#include "./Primatives/objsphere.hpp"
+#include "./Primatives/objplane.hpp"
+#include "./Primatives/cylinder.hpp"
+#include "./Primatives/cone.hpp"
+#include "./Primatives/box.hpp"
+#include "./Lights/pointlight.hpp"
+#include "./RayMarch/sphere.hpp"
+#include "./RayMarch/torus.hpp"
+#include "./RayMarch/cube.hpp"
+#include "./Normals/simplerough.hpp"
+#include "./Normals/texturenormal.hpp"
 
 
 namespace qbRT
