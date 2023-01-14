@@ -221,6 +221,12 @@ qbRT::Scene::Scene()
 	stoneTexture -> SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0}},
 								 0.0,
 								 qbVector<double>{std::vector<double>{4.0, 4.0}});
+
+	auto imageTexture2 = std::make_shared<qbRT::Texture::Image> (qbRT::Texture::Image());
+	imageTexture2 -> LoadImage("Voronoi.bmp");
+	imageTexture2 -> SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0}},
+								 0.0,
+							     qbVector<double>{std::vector<double>{1.0, 1.0}});
     
 	// *************************************
 	// Create and setup a simple normal map.
@@ -232,6 +238,13 @@ qbRT::Scene::Scene()
 	auto normMap2 = std::make_shared<qbRT::Normal::TextureNormal> (qbRT::Normal::TextureNormal());
 	normMap2 -> AssignBaseTexture(stoneTexture);
 	normMap2 -> m_scale = 0.015;
+
+
+	auto imageNormal = std::make_shared<qbRT::Normal::Image> (qbRT::Normal::Image());
+	imageNormal -> LoadImage("Voronoi_normal.bmp");
+	imageNormal -> SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0}},
+								0.0,
+								qbVector<double>{std::vector<double>{1.0, 1.0}} );
     
     //*******************************
     // Create some materials.
@@ -306,8 +319,10 @@ qbRT::Scene::Scene()
     floorMaterial -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 1.0, 1.0}};
 	floorMaterial -> m_reflectivity = 0.5;
 	floorMaterial -> m_shininess = 0.0;
-	floorMaterial -> AssignTexture(floorTexture2);
-	floorMaterial -> AssignNormalMap(normMap2);
+	//floorMaterial -> AssignTexture(floorTexture2);
+	//floorMaterial -> AssignNormalMap(normMap2);
+	floorMaterial -> AssignTexture(imageTexture2);
+	floorMaterial -> AssignNormalMap(imageNormal);
 
     auto wallMaterial1 = std::make_shared<qbRT::SimpleMaterial> (qbRT::SimpleMaterial());
 	wallMaterial1 -> m_baseColor = qbVector<double>{std::vector<double>{0.45, 0.32, 0.89}}; //purple
@@ -512,14 +527,14 @@ qbRT::Scene::Scene()
 	//Sphere3 ->AssignMaterial(imageMaterial2);
 	Sphere3  ->AssignMaterial(candyMat);
 
-	/*auto Sphere1 = std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere());
-	Sphere1 -> m_isVisible = true;
-	Sphere1 -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{-2.0, -1.25, -1.0}},
+	auto Sphere11 = std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere());
+	Sphere11 -> m_isVisible = true;
+	Sphere11 -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{-2.0, -1.25, -1.0}},
 												     qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
 												     qbVector<double>{std::vector<double>{0.75, 0.75, 0.75}}});
 	//Sphere1 -> AssignMaterial(blueDiffuse);
 	//Sphere1 ->AssignMaterial(imageMaterial2);
-	Sphere1  ->AssignMaterial(candyMat);*/
+	Sphere11  ->AssignMaterial(cloudMat);
 
 	auto Sphere1 = std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere());
 	Sphere1 -> m_isVisible = true;
@@ -553,8 +568,8 @@ qbRT::Scene::Scene()
 	floor2 -> SetTransformMatrix(qbRT::GTform {qbVector<double>{std::vector<double>{0.0, 0.0, 0.5}},
 											   qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
 											   qbVector<double>{std::vector<double>{16.0, 16.0, 1.0}}});
-	//floor2 -> AssignMaterial(floorMaterial);
-	floor2 -> AssignMaterial(stoneMat);
+	floor2 -> AssignMaterial(floorMaterial);
+	//floor2 -> AssignMaterial(stoneMat);
 	
 	auto leftWall = std::make_shared<qbRT::ObjPlane> (qbRT::ObjPlane());
 	leftWall -> m_isVisible = true;
@@ -615,8 +630,8 @@ qbRT::Scene::Scene()
 
 	//m_objectList.push_back(cone);
 	//m_objectList.push_back(leftSphere);
-	//m_objectList.push_back(floor);
-	m_objectList.push_back(floor2);
+	m_objectList.push_back(floor);
+	//m_objectList.push_back(floor2);
 	//m_objectList.push_back(leftWall);
 	//m_objectList.push_back(backWall);
 	//m_objectList.push_back(rightWall);
@@ -627,6 +642,7 @@ qbRT::Scene::Scene()
 	m_objectList.push_back(Sphere1);
 	m_objectList.push_back(Sphere2);
 	m_objectList.push_back(Sphere3);
+	m_objectList.push_back(Sphere11);
 	m_objectList.push_back(rightSphere1);
 	//m_objectList.push_back(rightSphere2);
 	m_objectList.push_back(box);

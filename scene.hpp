@@ -17,6 +17,7 @@
 #include "./RayMarch/cube.hpp"
 #include "./Normals/simplerough.hpp"
 #include "./Normals/texturenormal.hpp"
+#include "./Normals/image.hpp"
 
 
 namespace qbRT
